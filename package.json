@@ -1,0 +1,38 @@
+{
+  "name": "jestsimongame",
+  "version": "1.0.0",
+  "description": "Simon game for testing Jest",
+  "main": "game.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bizboz1981/jestSimonGame.git"
+  },
+  "author": "bill saunders",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bizboz1981/jestSimonGame/issues"
+  },
+  "homepage": "https://github.com/bizboz1981/jestSimonGame#readme",
+  "dependencies": {
+    "text-decoder": "",
+    "text-encoder": ""
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.3",
+    "@babel/preset-env": "^7.24.3",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^24.0.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "testEnvironment": "jsdom",
+    "setupFiles": ["./jest.setup.js"]
+  }
+}
