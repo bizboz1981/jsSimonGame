@@ -4,7 +4,9 @@ let game = {
     currentGame: [],
     playerMoves: [],
     choices: ['button1', 'button2', 'button3', 'button4'],
-    turnNumber: 0
+    turnNumber: 0,
+    turnInProgress: false,
+    lastButton: '',
 };
 
 const newGame = () => {
@@ -19,15 +21,18 @@ const newGame = () => {
     for (let circle of document.getElementsByClassName('circle')) { // Added let to declare circle
         if (circle.getAttribute('data-listener') !== 'true') {
             circle.addEventListener('click', (event) => {
-                let move = event.target.getAttribute('id');
-                lightsOn(move);
-                game.playerMoves.push(move);
-                playerTurn();
+                if (game.currentGame.length > 0 && !game.turnInProgress) {
+                    let move = event.target.getAttribute('id');
+                    game.lastButton = move;
+                    lightsOn(move);
+                    game.playerMoves.push(move);
+                    playerTurn();
+                };
             });
             circle.setAttribute('data-listener', 'true');
         }
     }
-    showScore(); // Fixed misplaced parentheses
+    showScore();
     addTurn();
 };
 
@@ -49,33 +54,33 @@ const lightsOn = (circ) => {
     document.getElementById(circ).classList.add('light');
     setTimeout(() => {
         document.getElementById(circ).classList.remove('light');
-    }, 400);
+    }, 600);
 };
 
 const showTurns = () => {
+    game.turnInProgress = true;
     game.turnNumber = 0;
     let turns = setInterval(() => {
         lightsOn(game.currentGame[game.turnNumber]);
         game.turnNumber++;
         if (game.turnNumber >= game.currentGame.length) {
             clearInterval(turns);
+            game.turnInProgress = false;
         }
     }, 800);
 };
 
 const playerTurn = () => {
-    if (game.playerMoves.length === game.currentGame.length) {
-        const isCorrect = game.playerMoves.every((move, index) => move === game.currentGame[index]);
-
-        if (isCorrect) {
-            game.score++; // Increment score for a correct sequence
-            showScore(); // Update score display
-            addTurn(); // Add a new turn to increase difficulty
-        } else {
-            // Handle incorrect sequence (e.g., game over, try again, etc.)
-            alert('Wrong sequence! Try again.');
-            // Optionally reset game or current level depending on game rules
+    let i = game.playerMoves.length - 1;
+    if (game.currentGame[i] === game.playerMoves[i]) {
+        if (game.currentGame.length === game.playerMoves.length) {
+            game.score++;
+            showScore();
+            addTurn();
         }
+    } else {
+        alert('Wrong move!');
+        newGame();
     }
 };
 
