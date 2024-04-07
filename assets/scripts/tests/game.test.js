@@ -55,7 +55,7 @@ describe('newGame function works correctly', () => {
     test('expect data-listener to be true', () => {
         const elements = document.getElementsByClassName('circle');
         for (let element of elements) {
-            expect(element.getAttribute('data-listener')).toBe(true);
+            expect(element.getAttribute('data-listener')).toBe('true');
         }
     });
 });
@@ -85,5 +85,10 @@ describe('gameplay works correctly', () => {
         game.turnNumber = 42;
         showTurns();
         expect(game.turnNumber).toBe(0);
+    });
+    test ('should increment the score if the turn is correct', () => {
+        game.playerMoves.push(game.currentGame[0]);
+        playerTurn();
+        expect(game.score).toBe(1);
     });
 });

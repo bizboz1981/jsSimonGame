@@ -63,4 +63,21 @@ const showTurns = () => {
     }, 800);
 };
 
-module.exports = {game, newGame, showScore, addTurn, lightsOn, showTurns};
+const playerTurn = () => {
+    if (game.playerMoves.length === game.currentGame.length) {
+        const isCorrect = game.playerMoves.every((move, index) => move === game.currentGame[index]);
+
+        if (isCorrect) {
+            game.score++; // Increment score for a correct sequence
+            showScore(); // Update score display
+            addTurn(); // Add a new turn to increase difficulty
+        } else {
+            // Handle incorrect sequence (e.g., game over, try again, etc.)
+            alert('Wrong sequence! Try again.');
+            // Optionally reset game or current level depending on game rules
+        }
+    }
+};
+
+
+module.exports = {game, newGame, showScore, addTurn, lightsOn, showTurns, playerTurn};
