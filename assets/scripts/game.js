@@ -59,16 +59,27 @@ const lightsOn = (circ) => {
 
 const showTurns = () => {
     game.turnInProgress = true;
-    game.turnNumber = 0;
-    let turns = setInterval(() => {
-        lightsOn(game.currentGame[game.turnNumber]);
-        game.turnNumber++;
-        if (game.turnNumber >= game.currentGame.length) {
-            clearInterval(turns);
+    let index = 0; // This will keep track of the current index in the sequence.
+
+    // Function to handle the flashing logic for one circle.
+    const flashCircle = () => {
+        const circleId = game.currentGame[index];
+        lightsOn(circleId);
+        index++;
+        
+        // If we've shown all circles in the sequence, stop the interval.
+        if (index >= game.currentGame.length) {
             game.turnInProgress = false;
+        } else {
+            // Otherwise, set a timeout to flash the next circle after a short delay.
+            setTimeout(flashCircle, 800); // Adjust this delay to control the gap between flashes.
         }
-    }, 800);
+    };
+
+    // Start the flashing sequence.
+    flashCircle();
 };
+
 
 const playerTurn = () => {
     let i = game.playerMoves.length - 1;
@@ -76,7 +87,9 @@ const playerTurn = () => {
         if (game.currentGame.length === game.playerMoves.length) {
             game.score++;
             showScore();
-            addTurn();
+            setTimeout(() => {
+                addTurn();
+            }, 2000);
         }
     } else {
         alert('Wrong move!');
